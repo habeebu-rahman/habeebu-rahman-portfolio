@@ -1,88 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habeebu Rahman | Portfolio</title>
+import { useEffect,useState } from 'react';
+import { NavLink } from './components/NavLink';
+import { MobileNavLink } from './components/MobileNavLink';
+import { ProjectCard } from './components/ProjectCard';
+import { SectionHeader } from './components/SectionHeader';
+import { SkillItem } from './components/SkillItem';
+import { SocialIcon } from './components/SocialIcon';
+import { SoftSkillItem } from './components/SoftSkillItem';
+import { Icons } from './components/Icons';
 
-  <!-- emailjs -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-  <!-- Lottie -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
-  
-  <!-- Tailwind CSS v2.2.19 -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-  />
-  
-  <!-- React & ReactDOM -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  
-  <!-- Babel for JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- browser tab icon -->
-  <link rel="icon" type="image/png" href="/fevicon.png" />
-
-  <style>
-    /* Custom Animation Classes */
-    .fade-in-up {
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body class="bg-gray-900 text-gray-200 font-sans overflow-x-hidden">
-  <div id="root"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // --- ICONS (Inline SVGs to prevent import errors) ---
-    const Icon = ({ children, className, ...props }) => (
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className={className} 
-        {...props}
-      >
-        {children}
-      </svg>
-    );
-
-    const Icons = {
-      Menu: (props) => <Icon {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></Icon>,
-      X: (props) => <Icon {...props}><path d="M18 6 6 18"/><path d="m6 6 18 18"/></Icon>,
-      Github: (props) => <Icon {...props}><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></Icon>,
-      Linkedin: (props) => <Icon {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></Icon>,
-      Mail: (props) => <Icon {...props}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></Icon>,
-      ExternalLink: (props) => <Icon {...props}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></Icon>,
-      Code2: (props) => <Icon {...props}><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></Icon>,
-      Server: (props) => <Icon {...props}><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></Icon>,
-      Database: (props) => <Icon {...props}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s-9-1.34-9-3V5"/></Icon>,
-      Terminal: (props) => <Icon {...props}><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></Icon>,
-      User: (props) => <Icon {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></Icon>,
-      ChevronDown: (props) => <Icon {...props}><path d="m6 9 6 6 6-6"/></Icon>,
-      Send: (props) => <Icon {...props}><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></Icon>,
-      Indeed: (props) => <Icon {...props}><path d="M11.566 21.5633v-8.762c.2553.0231.5009.0346.758.0346 1.2225 0 2.3739-.3206 3.3506-.8928v9.6182c0 .8219-.1957 1.4287-.5757 1.8338-.378.4033-.8808.6049-1.491.6049-.6007 0-1.0766-.2016-1.468-.6183-.3781-.4032-.5739-1.01-.5739-1.8184zM11.589.5659c2.5447-.8929 5.4424-.8449 7.6186.987.405.3687.8673.8334 1.0515 1.3806.2207.6913-.7695-.073-.9057-.167-.71-.4532-1.4182-.8334-2.2127-1.0946C12.8614.3873 8.8122 2.709 6.2945 6.315c-1.0516 1.5939-1.7367 3.2721-2.299 5.1174-.0614.2017-.1094.4647-.2207.6413-.1113.2036-.048-.5453-.048-.5702.0845-.7623.2438-1.4997.4414-2.237C5.3292 5.3375 7.897 2.0655 11.5891.5658zm4.9281 7.0587c0 1.6686-1.353 3.0224-3.0205 3.0224-1.6677 0-3.0186-1.3538-3.0186-3.0224 0-1.6687 1.351-3.0224 3.0186-3.0224 1.6676 0 3.0205 1.3518 3.0205 3.0224Z"/></Icon>,
-      Document: (props) => (<Icon {...props}><path d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" /><path d="M14 2v5h5" /><path d="M9 11h6" /><path d="M9 15h6" /><path d="M9 19h3" /></Icon>)
-    };
-
-    const App = () => {
+const App = () => {
       const [isScrolled, setIsScrolled] = useState(false);
       const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -500,97 +428,4 @@
       );
     };
 
-    const NavLink = ({ href, children }) => (
-      <a 
-        href={href} 
-        className="text-gray-300 hover:text-blue-900 hover:text-blue-900 font-medium transition-colors relative group"
-      >
-        {children}
-        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full" />
-      </a>
-    );
-
-    const MobileNavLink = ({ href, children, onClick }) => (
-      <a 
-        href={href} 
-        onClick={onClick}
-        className="block text-lg font-medium text-gray-300 hover:text-blue-900 p-2"
-      >
-        {children}
-      </a>
-    );
-
-    const SocialIcon = ({ icon, href }) => (
-      <a 
-        href={href} 
-        target="_blank" 
-        rel="noreferrer"
-        className="p-3 bg-gray-900 rounded-full border border-gray-800 hover:border-blue-900 hover:text-blue-900 transition-all transform hover:-translate-y-0.5"
-      >
-        {icon}
-      </a>
-    );
-
-    const SectionHeader = ({ title, subtitle }) => (
-      <div className="text-center space-y-2">
-        <span className="text-blue-700 font-bold tracking-widest text-sm uppercase">{subtitle}</span>
-        <h2 className="text-3xl md:text-5xl font-bold text-white">{title}</h2>
-      </div>
-    );
-
-    const SkillItem = ({ name, level }) => (
-      <div className="group">
-        <div className="flex justify-between text-sm font-medium mb-1">
-          <span className="text-gray-300">{name}</span>
-          <span className="text-blue-700">{level}</span>
-        </div>
-        <div className="w-full bg-gray-800 rounded-full h-2">
-          <div 
-            className="bg-gradient-to-r from-blue-900 to-purple-500 h-2 rounded-full transition-all duration-1000"
-            style={{ width: level }}
-          />
-        </div>
-      </div>
-    );
-
-    const SoftSkillItem = ({ title, desc }) => (
-      <div className="flex items-start gap-4">
-        <div className="w-2 h-2 mt-2 rounded-full bg-purple-500" />
-        <div>
-          <h4 className="font-bold text-gray-200">{title}</h4>
-          <p className="text-sm text-gray-400">{desc}</p>
-        </div>
-      </div>
-    );
-
-    const ProjectCard = ({ title, tags, description, icon, className}) => (
-      <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-900 transition-all duration-300  group hover:-translate-y-2">
-        <div className="p-8 space-y-4 ">
-          <div className="flex justify-between items-start ">
-            <div className="p-3 bg-gray-800 rounded-lg group-hover:bg-gray-900 transition-colors">
-              {icon}
-            </div>
-            <Icons.ExternalLink size={20} className="text-gray-500 hover:text-blue-900 cursor-pointer" />
-          </div>
-          
-          <h3 className="text-xl font-bold text-white group-hover:text-blue-900 transition-colors">{title}</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            {description}
-          </p>
-
-          <div className="flex flex-wrap gap-2 pt-4">
-            {tags.map((tag, idx) => (
-              <span key={idx} className="text-xs px-3 py-1 rounded-full bg-gray-900 text-blue-700 border border-gray-700">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
-</body>
-</html>
+export default App
