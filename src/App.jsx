@@ -94,8 +94,8 @@ const App = () => {
       
 
       return (
-        <div className="min-h-screen">
-          
+        <div className="min-h-[100dvh]">
+          <div className="max-w-7xl mx-auto px-6">
           {/* --- NAVIGATION --- */}
           <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -424,6 +424,7 @@ const App = () => {
           <footer className="py-8 bg-gray-900 border-t border-gray-900 text-center text-gray-500 text-sm">
             <p>© Build by Habeebu Rahman 2025 - 26 </p>
           </footer>
+        </div>
         </div>
       );
     };
