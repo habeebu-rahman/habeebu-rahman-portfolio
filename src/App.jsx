@@ -1,4 +1,5 @@
 import { useEffect,useState } from 'react';
+import './App.css'
 import { NavLink } from './components/NavLink';
 import { MobileNavLink } from './components/MobileNavLink';
 import { ProjectCard } from './components/ProjectCard';
@@ -94,7 +95,7 @@ const App = () => {
       
 
       return (
-        <div className="min-h-[100dvh]">
+        <div className="min-h-screen">
           {/* --- NAVIGATION --- */}
           <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${
